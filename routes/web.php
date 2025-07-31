@@ -1,33 +1,27 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 use App\Http\Controllers\TaskController;
 
-Route::get('/', [TaskController::class, 'index']);
-Route::post('/tasks', [TaskController::class, 'store']);
-Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
-use App\Models\Task;
-use Illuminate\Http\Request;
-
-// Show all tasks
-Route::get('/tasks', function () {
-    $tasks = Task::all();
-    return view('tasks', ['tasks' => $tasks]);
+Route::get('/', function () {
+    return view('/dashboard');
 });
 
-// Add a new task
-Route::post('/tasks', function (Request $request) {
-    Task::create(['title' => $request->title]);
-    return redirect('/tasks');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
+
+    // Task routes
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::put('/tasks/{id}/toggle', [TaskController::class, 'markComplete'])->name('tasks.complete');
+
+    // Profile routes (this fixes the error)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Delete a task
-Route::delete('/tasks/{id}', function ($id) {
-    Task::findOrFail($id)->delete();
-    return redirect('/tasks');
-});
+require __DIR__.'/auth.php';

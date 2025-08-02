@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            To-Do List
+        <h2 class="font-semibold text-xl text-white leading-tight">
+            ✅ To-Do List
         </h2>
     </x-slot>
 
@@ -61,7 +61,7 @@
                     @foreach ($tasks as $task)
                         <li class="flex justify-between items-center py-4">
                             <div>
-                                <span class="font-semibold">{{ $task->title }}</span>
+                                <span class="font-semibold text-white">{{ $task->title }}</span>
                                 @if($task->deadline)
                                     <small class="block text-gray-500">Due: {{ \Carbon\Carbon::parse($task->deadline)->format('M d, Y H:i') }}</small>
                                     

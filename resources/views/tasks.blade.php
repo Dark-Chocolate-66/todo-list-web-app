@@ -51,7 +51,7 @@
     </form>
 </div>
 
-        <h1 class="text-2xl font-bold mb-4">To-Do List</h1>
+        <h1 class="text-2xl font-bold mb-4 text-gray-800">To-Do List</h1>
         <!-- Sorting Dropdown -->
 <div class="mb-4">
     <form method="GET" action="/">

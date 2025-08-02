@@ -50,11 +50,16 @@
         </div>
 
         <!-- 👇 Task Stats Here -->
-        <div class="mt-6 text-white">
-            <p class="text-lg">Pending Tasks: <span class="font-bold">{{ $pending }}</span></p>
-            <p class="text-lg">Completed Tasks: <span class="font-bold">{{ $completed }}</span></p>
-            <p class="text-lg">Total Tasks: <span class="font-bold">{{ $total }}</span></p>
-        </div>
+        <div class="bg-gray-800 p-4 rounded-xl shadow-md mt-4 justify-center">
+    <h4 style="font-size: 1rem;" class="text-white font-semibold mb-4">Overview</h4>
+    <!-- <canvas id="taskChart" class="w-60 h-60"></canvas> -->
+<div class="flex justify-center">
+    <canvas id="taskChart" class="w-60 h-60"></canvas>
+</div>
+
+
+</div>
+
     </div>
 </a>
 
@@ -62,4 +67,38 @@
 
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('taskChart').getContext('2d');
+    const taskChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Completed', 'Pending', 'Total'],
+            datasets: [{
+                label: 'Task Stats',
+                data: [{{ $completed }}, {{ $pending }}, {{ $total }}],
+                backgroundColor: [
+                    'rgba(34, 197, 94, 0.7)',
+                    'rgba(234, 179, 8, 0.7)',
+                    'rgba(59, 130, 246, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(34, 197, 94, 1)',
+                    'rgba(234, 179, 8, 1)',
+                    'rgba(59, 130, 246, 1)'
+                ],
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: false, 
+            plugins: {
+                legend: {
+                    labels: { color: 'white' }
+                }
+            }
+        }
+    });
+</script>
 </x-app-layout>

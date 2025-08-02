@@ -12,8 +12,9 @@ class Task extends Model
     protected $fillable = [
         'title',
         'deadline',
-        'user_id',       // <- This line is necessary
+        'user_id',      
         'is_completed',
+        'title',
     ];
 
     public function user()

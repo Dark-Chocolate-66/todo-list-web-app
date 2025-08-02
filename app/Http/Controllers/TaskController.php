@@ -10,15 +10,17 @@ class TaskController extends Controller
 {
     // Show Dashboard
     public function index()
-    {
-        $tasks = Task::where('user_id', Auth::id())->orderBy('deadline')->get();
+{
+    $user = Auth::user();
+    $tasks = Task::where('user_id', $user->id)->orderBy('deadline')->get();
 
-        $total = $tasks->count();
-        $pending = $tasks->where('is_completed', false)->count();
-        $completed = $tasks->where('is_completed', true)->count();
+    $pending = $tasks->where('is_completed', false)->count();
+    $completed = $tasks->where('is_completed', true)->count();
+    $total = $tasks->count();
 
-        return view('dashboard', compact('tasks', 'total', 'pending', 'completed'));
-    }
+    return view('tasks.todo', compact('tasks', 'pending', 'completed', 'total'));
+}
+
 
     // Store New Task
     public function store(Request $request)
@@ -81,5 +83,17 @@ class TaskController extends Controller
 
     return redirect()->route('dashboard')->with('success', 'Task status updated!');
 }
+// To do List
+public function todo()
+{
+    $tasks = Task::where('user_id', auth()->id())->latest()->get();
+
+    $pending = $tasks->where('is_completed', false)->count();
+    $completed = $tasks->where('is_completed', true)->count();
+    $total = $tasks->count();
+
+    return view('tasks.todo', compact('tasks', 'pending', 'completed', 'total'));
+}
+
 
 }
